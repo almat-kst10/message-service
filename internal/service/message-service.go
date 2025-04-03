@@ -30,5 +30,5 @@ func (s *MessageService) GetMessage(ctx context.Context, user1Id, user2Id int) (
 }
 
 func (s *MessageService) ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error) {
-	return s.repo.ChatsList(ctx, )
+	return s.repo.ChatsList(ctx, profiles_id)
 }
