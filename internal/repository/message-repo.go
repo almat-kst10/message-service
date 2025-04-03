@@ -7,6 +7,7 @@ import (
 
 	"github.com/almat-kst10/message-service/configs"
 	"github.com/almat-kst10/message-service/internal/models"
+	_ "github.com/lib/pq"
 )
 
 type IMessageRepo interface {
@@ -49,14 +50,14 @@ func (r *MessageRepo) Close() {
 }
 
 func (r *MessageRepo) SaveMessage(ctx context.Context, message *models.Message) (bool, error) {
-	query := "INSERT INTO message (sender_id, receiver_id, text, created_at) VALUES ($1, $2, $3, NOW())"
+	query := "INSERT INTO messages (sender_id, receiver_id, message, created_at) VALUES ($1, $2, $3, NOW())"
 	_, err := r.db.Exec(query, message.SenderId, message.ReceiverId, message.Text)
 	return err == nil, err
 }
 
 func (r *MessageRepo) GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error) {
 	query := `
-		SELECT id, sender_id, receiver_id, text, created
+		SELECT id, sender_id, receiver_id, message, created_at
 		FROM messages
 		WHERE (sender_id=$1 AND receiver_id=$2) OR (sender_id=$2 AND receiver_id=$1)
 		ORDER BY created_at

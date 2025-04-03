@@ -23,6 +23,7 @@ func (s *Server) SendMessage(ctx context.Context, req *proto.SendMessageRequest)
 		ReceiverId: int(req.ReceiverId),
 		Text:       req.Text,
 	}
+	
 	success, err := s.service.SaveMessage(ctx, message)
 	if err != nil {
 		return nil, err

@@ -2,7 +2,11 @@ package app
 
 import (
 	"fmt"
+	"log"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/almat-kst10/message-service/configs"
 	"github.com/almat-kst10/message-service/internal/repository"
@@ -29,15 +33,31 @@ func Run(configs *configs.Configs) error {
 	if err != nil {
 		return err
 	}
-	serv := grpc.NewServer()
+	log.Println("gRPC сервер запущен на", grpcPort)
 
+	serv := grpc.NewServer()
 	proto.RegisterMessageServiceServer(serv, grpcServer)
 	reflection.Register(serv)
-	return serv.Serve(lis)
 
-	// redisClient := redis.NewClient(&redis.Options{Addr: "localhost:6379"})
-	// wsServer := websocket.NewWebSocket(redisClient)
+	// Канал для graceful shutdown
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
-	// http.HandleFunc("/ws", wsServer.HandlerConn)
+	// Запускаем сервер в горутине
+	go func() {
+		if err := serv.Serve(lis); err != nil {
+			log.Fatalf("Ошибка запуска сервера: %v", err)
+		}
+	}()
 
+	// Ожидание сигнала завершения
+	<-stop
+	log.Println("\n Получен сигнал завершения. Завершаем сервер...")
+
+	// Завершаем сервер корректно
+	serv.GracefulStop()
+
+	log.Println("gRPC сервер корректно завершил работу")
+
+	return nil
 }

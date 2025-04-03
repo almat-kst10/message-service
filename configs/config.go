@@ -20,7 +20,7 @@ type Configs struct {
 	}
 	GRPC struct {
 		ConnectType string `mapstructure:"GRPC_CONNECT_TYPE"`
-		Port        string `mapstructdure:"GRPC_PORT"`
+		Port        string `mapstructure:"GRPC_PORT"`
 	}
 }
 
@@ -43,6 +43,12 @@ func NewConfigs() (*Configs, error) {
 	viper.SetConfigName(configName)
 	viper.SetConfigType(configType)
 
+	err = viper.ReadInConfig()
+	if err != nil {
+		log.Println("error for load config", err)
+		return nil, err
+	}
+
 	var config Configs
 	if err := viper.Unmarshal(&config.DB); err != nil {
 		log.Println("Error unmarshal config", err)
@@ -54,5 +60,5 @@ func NewConfigs() (*Configs, error) {
 		return nil, err
 	}
 
-	return &Configs{}, nil
+	return &config, nil
 }
