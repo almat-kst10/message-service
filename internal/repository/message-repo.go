@@ -13,6 +13,7 @@ import (
 type IMessageRepo interface {
 	SaveMessage(ctx context.Context, message *models.Message) (bool, error)
 	GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error)
+	ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error)
 	Close()
 }
 
@@ -47,6 +48,35 @@ func NewRepositoryMessage(cfg *configs.Configs) (IMessageRepo, error) {
 
 func (r *MessageRepo) Close() {
 	r.db.Close()
+}
+
+func (r *MessageRepo) ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error) {
+	query := "SELECT id, profiles_id, last_message, is_read, count_new_msg FROM chat_list WHERE profiles_id = $1"
+	rows, err := r.db.QueryContext(ctx, query, profiles_id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var chatsList []models.Chat
+	for rows.Next() {
+		var chat models.Chat
+		err := rows.Scan(
+			&chat.Id,
+			&chat.ProfilesId,
+			&chat.LastMessage,
+			&chat.IsRead,
+			&chat.CountNewMsg,
+		)
+
+		if err != nil {
+			return nil, err
+		}
+
+		chatsList = append(chatsList, chat)
+	}
+	
+	return chatsList, nil
 }
 
 func (r *MessageRepo) SaveMessage(ctx context.Context, message *models.Message) (bool, error) {

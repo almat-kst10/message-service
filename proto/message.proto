@@ -5,8 +5,24 @@ package proto;
 option go_package = "github.com/almat-kst10/message_micro/proto";
 
 service MessageService {
+    rpc ChatsList (ChatsListRequest) returns (ChatsListResponse);
     rpc SendMessage (SendMessageRequest) returns (SendMessageResponse);
     rpc GetMessage (GetMessageRequest) returns (GetMessageResponse);
+}
+
+message ChatsListRequest {
+    int32 profile_id = 1;
+}
+
+message Chat {
+    int32 profile_id = 1;
+    string last_message = 2;
+    bool is_read = 3;
+    int32 count_new_msg = 4;
+}
+
+message ChatsListResponse {
+    repeated Chat chats = 1;
 }
 
 message SendMessageRequest {

@@ -17,13 +17,33 @@ func NewMessageHandler(service service.IMessageService) *Server {
 	return &Server{service: service}
 }
 
+func (s *Server) ChatsList(ctx context.Context, req *proto.ChatsListRequest) (*proto.ChatsListResponse, error) {
+	chatsList, err := s.service.ChatsList(ctx, int(req.ProfileId))
+	if err != nil {
+		return nil, err
+	}
+
+	var protoChatsList []*proto.Chat
+	for _, chat := range chatsList {
+		protoChats := &proto.Chat{
+			ProfileId:   int32(chat.ProfilesId),
+			LastMessage: chat.LastMessage,
+			IsRead:      chat.IsRead,
+			CountNewMsg: int32(chat.CountNewMsg),
+		}
+		protoChatsList = append(protoChatsList, protoChats)
+	}
+
+	return &proto.ChatsListResponse{Chats: protoChatsList}, nil
+}
+
 func (s *Server) SendMessage(ctx context.Context, req *proto.SendMessageRequest) (*proto.SendMessageResponse, error) {
 	message := &models.Message{
 		SenderId:   int(req.SenderId),
 		ReceiverId: int(req.ReceiverId),
 		Text:       req.Text,
 	}
-	
+
 	success, err := s.service.SaveMessage(ctx, message)
 	if err != nil {
 		return nil, err
