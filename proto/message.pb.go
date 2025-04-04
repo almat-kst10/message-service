@@ -66,13 +66,15 @@ func (x *ChatsListRequest) GetProfileId() int32 {
 }
 
 type Chat struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProfileId     int32                  `protobuf:"varint,1,opt,name=profile_id,json=profileId,proto3" json:"profile_id,omitempty"`
-	LastMessage   string                 `protobuf:"bytes,2,opt,name=last_message,json=lastMessage,proto3" json:"last_message,omitempty"`
-	IsRead        bool                   `protobuf:"varint,3,opt,name=is_read,json=isRead,proto3" json:"is_read,omitempty"`
-	CountNewMsg   int32                  `protobuf:"varint,4,opt,name=count_new_msg,json=countNewMsg,proto3" json:"count_new_msg,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	MyProfileId    int32                  `protobuf:"varint,1,opt,name=my_profile_id,json=myProfileId,proto3" json:"my_profile_id,omitempty"`
+	User2ProfileId int32                  `protobuf:"varint,2,opt,name=user2_profile_id,json=user2ProfileId,proto3" json:"user2_profile_id,omitempty"`
+	LastMessage    string                 `protobuf:"bytes,3,opt,name=last_message,json=lastMessage,proto3" json:"last_message,omitempty"`
+	IsRead         bool                   `protobuf:"varint,4,opt,name=is_read,json=isRead,proto3" json:"is_read,omitempty"`
+	CountNewMsg    int32                  `protobuf:"varint,5,opt,name=count_new_msg,json=countNewMsg,proto3" json:"count_new_msg,omitempty"`
+	IsVisible      bool                   `protobuf:"varint,6,opt,name=is_visible,json=isVisible,proto3" json:"is_visible,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Chat) Reset() {
@@ -105,9 +107,16 @@ func (*Chat) Descriptor() ([]byte, []int) {
 	return file_message_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Chat) GetProfileId() int32 {
+func (x *Chat) GetMyProfileId() int32 {
 	if x != nil {
-		return x.ProfileId
+		return x.MyProfileId
+	}
+	return 0
+}
+
+func (x *Chat) GetUser2ProfileId() int32 {
+	if x != nil {
+		return x.User2ProfileId
 	}
 	return 0
 }
@@ -131,6 +140,13 @@ func (x *Chat) GetCountNewMsg() int32 {
 		return x.CountNewMsg
 	}
 	return 0
+}
+
+func (x *Chat) GetIsVisible() bool {
+	if x != nil {
+		return x.IsVisible
+	}
+	return false
 }
 
 type ChatsListResponse struct {
@@ -460,13 +476,15 @@ const file_message_proto_rawDesc = "" +
 	"\rmessage.proto\x12\x05proto\"1\n" +
 	"\x10ChatsListRequest\x12\x1d\n" +
 	"\n" +
-	"profile_id\x18\x01 \x01(\x05R\tprofileId\"\x85\x01\n" +
-	"\x04Chat\x12\x1d\n" +
+	"profile_id\x18\x01 \x01(\x05R\tprofileId\"\xd3\x01\n" +
+	"\x04Chat\x12\"\n" +
+	"\rmy_profile_id\x18\x01 \x01(\x05R\vmyProfileId\x12(\n" +
+	"\x10user2_profile_id\x18\x02 \x01(\x05R\x0euser2ProfileId\x12!\n" +
+	"\flast_message\x18\x03 \x01(\tR\vlastMessage\x12\x17\n" +
+	"\ais_read\x18\x04 \x01(\bR\x06isRead\x12\"\n" +
+	"\rcount_new_msg\x18\x05 \x01(\x05R\vcountNewMsg\x12\x1d\n" +
 	"\n" +
-	"profile_id\x18\x01 \x01(\x05R\tprofileId\x12!\n" +
-	"\flast_message\x18\x02 \x01(\tR\vlastMessage\x12\x17\n" +
-	"\ais_read\x18\x03 \x01(\bR\x06isRead\x12\"\n" +
-	"\rcount_new_msg\x18\x04 \x01(\x05R\vcountNewMsg\"6\n" +
+	"is_visible\x18\x06 \x01(\bR\tisVisible\"6\n" +
 	"\x11ChatsListResponse\x12!\n" +
 	"\x05chats\x18\x01 \x03(\v2\v.proto.ChatR\x05chats\"f\n" +
 	"\x12SendMessageRequest\x12\x1b\n" +

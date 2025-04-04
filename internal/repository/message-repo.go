@@ -51,7 +51,7 @@ func (r *MessageRepo) Close() {
 }
 
 func (r *MessageRepo) ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error) {
-	query := "SELECT id, profiles_id, last_message, is_read, count_new_msg FROM chat_list WHERE profiles_id = $1"
+	query := "SELECT id, profiles_id, user2_profile_id, last_message, is_read, count_new_msg, is_visible FROM chat_list WHERE profiles_id = $1 AND is_visible = true"
 	rows, err := r.db.QueryContext(ctx, query, profiles_id)
 	if err != nil {
 		return nil, err
@@ -63,10 +63,12 @@ func (r *MessageRepo) ChatsList(ctx context.Context, profiles_id int) ([]models.
 		var chat models.Chat
 		err := rows.Scan(
 			&chat.Id,
-			&chat.ProfilesId,
+			&chat.MyProfileId,
+			&chat.User2ProfileId,
 			&chat.LastMessage,
 			&chat.IsRead,
 			&chat.CountNewMsg,
+			&chat.IsVisible,
 		)
 
 		if err != nil {

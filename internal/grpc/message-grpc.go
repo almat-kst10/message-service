@@ -26,10 +26,12 @@ func (s *Server) ChatsList(ctx context.Context, req *proto.ChatsListRequest) (*p
 	var protoChatsList []*proto.Chat
 	for _, chat := range chatsList {
 		protoChats := &proto.Chat{
-			ProfileId:   int32(chat.ProfilesId),
-			LastMessage: chat.LastMessage,
-			IsRead:      chat.IsRead,
-			CountNewMsg: int32(chat.CountNewMsg),
+			MyProfileId:    int32(chat.MyProfileId),
+			User2ProfileId: int32(chat.User2ProfileId),
+			LastMessage:    chat.LastMessage,
+			IsRead:         chat.IsRead,
+			CountNewMsg:    int32(chat.CountNewMsg),
+			IsVisible:      chat.IsVisible,
 		}
 		protoChatsList = append(protoChatsList, protoChats)
 	}

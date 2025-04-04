@@ -15,10 +15,12 @@ message ChatsListRequest {
 }
 
 message Chat {
-    int32 profile_id = 1;
-    string last_message = 2;
-    bool is_read = 3;
-    int32 count_new_msg = 4;
+    int32 my_profile_id = 1;
+    int32 user2_profile_id = 2;
+    string last_message = 3;
+    bool is_read = 4;
+    int32 count_new_msg = 5;
+    bool is_visible = 6;
 }
 
 message ChatsListResponse {
