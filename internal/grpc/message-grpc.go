@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"log"
 
 	"github.com/almat-kst10/message-service/internal/models"
 	"github.com/almat-kst10/message-service/internal/service"
@@ -33,6 +34,7 @@ func (s *Server) ChatsList(ctx context.Context, req *proto.ChatsListRequest) (*p
 			CountNewMsg:    int32(chat.CountNewMsg),
 			IsVisible:      chat.IsVisible,
 		}
+
 		protoChatsList = append(protoChatsList, protoChats)
 	}
 

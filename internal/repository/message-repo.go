@@ -51,8 +51,9 @@ func (r *MessageRepo) Close() {
 }
 
 func (r *MessageRepo) ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error) {
-	query := "SELECT id, profiles_id, user2_profile_id, last_message, is_read, count_new_msg, is_visible FROM chat_list WHERE profiles_id = $1 AND is_visible = true"
+	query := "SELECT id, my_profile_id, user2_profile_id, last_message, is_read, count_new_msg, is_visible FROM chat_list WHERE my_profile_id = $1 AND is_visible = true"
 	rows, err := r.db.QueryContext(ctx, query, profiles_id)
+
 	if err != nil {
 		return nil, err
 	}
@@ -70,14 +71,12 @@ func (r *MessageRepo) ChatsList(ctx context.Context, profiles_id int) ([]models.
 			&chat.CountNewMsg,
 			&chat.IsVisible,
 		)
-
 		if err != nil {
 			return nil, err
 		}
 
 		chatsList = append(chatsList, chat)
 	}
-	
 	return chatsList, nil
 }
 
@@ -109,6 +108,6 @@ func (r *MessageRepo) GetMessage(ctx context.Context, user1Id, user2Id int) ([]m
 		}
 		messages = append(messages, msg)
 	}
-	
+
 	return messages, nil
 }
