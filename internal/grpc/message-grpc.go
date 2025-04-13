@@ -2,7 +2,6 @@ package grpc
 
 import (
 	"context"
-	"log"
 
 	"github.com/almat-kst10/message-service/internal/models"
 	"github.com/almat-kst10/message-service/internal/service"
