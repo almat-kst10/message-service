@@ -5,9 +5,31 @@ package proto;
 option go_package = "github.com/almat-kst10/message_micro/proto";
 
 service MessageService {
+    rpc RoomList (RoomListRequest) returns (RoomListResponse);
     rpc ChatsList (ChatsListRequest) returns (ChatsListResponse);
     rpc SendMessage (SendMessageRequest) returns (SendMessageResponse);
     rpc GetMessage (GetMessageRequest) returns (GetMessageResponse);
+}
+
+message RoomListRequest {
+    int32 profile_id = 1;
+}
+
+message RoomListResponse {
+    repeated RoomGeneral room_general = 1;
+}
+
+message RoomGeneral {
+    int32 room_id = 1;
+    string room_tile = 2;
+    int32 client_id = 3;
+    int32 profile_id = 4;
+    string profile_name = 5;
+    string profile_surname = 6;
+    int32 role_id = 7;
+    string role_name = 8;
+    bool is_muted = 9;
+    bool is_typing = 10; 
 }
 
 message ChatsListRequest {

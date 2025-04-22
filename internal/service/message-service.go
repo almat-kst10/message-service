@@ -8,9 +8,9 @@ import (
 )
 
 type IMessageService interface {
-	SaveMessage(ctx context.Context, message *models.Message) (bool, error)
-	GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error)
-	ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error)
+	RoomList(ctx context.Context, profiles_id int) ([]models.RoomGeneralInfo, error)
+	// SaveMessage(ctx context.Context, message *models.Message) (bool, error)
+	// GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error)
 }
 
 type MessageService struct {
@@ -21,14 +21,14 @@ func NewServiceMessage(repo repository.IMessageRepo) IMessageService {
 	return &MessageService{repo: repo}
 }
 
-func (s *MessageService) SaveMessage(ctx context.Context, message *models.Message) (bool, error) {
-	return s.repo.SaveMessage(ctx, message)
+func (s *MessageService) RoomList(ctx context.Context, profiles_id int) ([]models.RoomGeneralInfo, error) {
+	return s.repo.RoomList(ctx, profiles_id)
 }
 
-func (s *MessageService) GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error) {
-	return s.repo.GetMessage(ctx, user1Id, user2Id)
-}
+// func (s *MessageService) SaveMessage(ctx context.Context, message *models.Message) (bool, error) {
+// 	return s.repo.SaveMessage(ctx, message)
+// }
 
-func (s *MessageService) ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error) {
-	return s.repo.ChatsList(ctx, profiles_id)
-}
+// func (s *MessageService) GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error) {
+// 	return s.repo.GetMessage(ctx, user1Id, user2Id)
+// }

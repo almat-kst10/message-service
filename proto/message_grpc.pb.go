@@ -19,6 +19,7 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
+	MessageService_RoomList_FullMethodName    = "/proto.MessageService/RoomList"
 	MessageService_ChatsList_FullMethodName   = "/proto.MessageService/ChatsList"
 	MessageService_SendMessage_FullMethodName = "/proto.MessageService/SendMessage"
 	MessageService_GetMessage_FullMethodName  = "/proto.MessageService/GetMessage"
@@ -28,6 +29,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageServiceClient interface {
+	RoomList(ctx context.Context, in *RoomListRequest, opts ...grpc.CallOption) (*RoomListResponse, error)
 	ChatsList(ctx context.Context, in *ChatsListRequest, opts ...grpc.CallOption) (*ChatsListResponse, error)
 	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
 	GetMessage(ctx context.Context, in *GetMessageRequest, opts ...grpc.CallOption) (*GetMessageResponse, error)
@@ -39,6 +41,16 @@ type messageServiceClient struct {
 
 func NewMessageServiceClient(cc grpc.ClientConnInterface) MessageServiceClient {
 	return &messageServiceClient{cc}
+}
+
+func (c *messageServiceClient) RoomList(ctx context.Context, in *RoomListRequest, opts ...grpc.CallOption) (*RoomListResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RoomListResponse)
+	err := c.cc.Invoke(ctx, MessageService_RoomList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *messageServiceClient) ChatsList(ctx context.Context, in *ChatsListRequest, opts ...grpc.CallOption) (*ChatsListResponse, error) {
@@ -75,6 +87,7 @@ func (c *messageServiceClient) GetMessage(ctx context.Context, in *GetMessageReq
 // All implementations must embed UnimplementedMessageServiceServer
 // for forward compatibility.
 type MessageServiceServer interface {
+	RoomList(context.Context, *RoomListRequest) (*RoomListResponse, error)
 	ChatsList(context.Context, *ChatsListRequest) (*ChatsListResponse, error)
 	SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error)
 	GetMessage(context.Context, *GetMessageRequest) (*GetMessageResponse, error)
@@ -88,6 +101,9 @@ type MessageServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedMessageServiceServer struct{}
 
+func (UnimplementedMessageServiceServer) RoomList(context.Context, *RoomListRequest) (*RoomListResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoomList not implemented")
+}
 func (UnimplementedMessageServiceServer) ChatsList(context.Context, *ChatsListRequest) (*ChatsListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ChatsList not implemented")
 }
@@ -116,6 +132,24 @@ func RegisterMessageServiceServer(s grpc.ServiceRegistrar, srv MessageServiceSer
 		t.testEmbeddedByValue()
 	}
 	s.RegisterService(&MessageService_ServiceDesc, srv)
+}
+
+func _MessageService_RoomList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoomListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).RoomList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_RoomList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).RoomList(ctx, req.(*RoomListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _MessageService_ChatsList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -179,6 +213,10 @@ var MessageService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "proto.MessageService",
 	HandlerType: (*MessageServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "RoomList",
+			Handler:    _MessageService_RoomList_Handler,
+		},
 		{
 			MethodName: "ChatsList",
 			Handler:    _MessageService_ChatsList_Handler,

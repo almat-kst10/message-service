@@ -11,9 +11,10 @@ import (
 )
 
 type IMessageRepo interface {
-	SaveMessage(ctx context.Context, message *models.Message) (bool, error)
-	GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error)
-	ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error)
+	// SaveMessage(ctx context.Context, message *models.Message) (bool, error)
+	// GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error)
+	
+	RoomList(ctx context.Context, profiles_id int) ([]models.RoomGeneralInfo, error)
 	Close()
 }
 
@@ -50,8 +51,25 @@ func (r *MessageRepo) Close() {
 	r.db.Close()
 }
 
-func (r *MessageRepo) ChatsList(ctx context.Context, profiles_id int) ([]models.Chat, error) {
-	query := "SELECT id, my_profile_id, user2_profile_id, last_message, is_read, count_new_msg, is_visible FROM chat_list WHERE my_profile_id = $1 AND is_visible = true"
+func (r *MessageRepo) RoomList(ctx context.Context, profiles_id int) ([]models.RoomGeneralInfo, error) {
+	query := `
+		SELECT 
+			r.id,
+			r.title,
+			rc.id,
+			rc.profile_id,
+			p.name,
+			p.surname,
+			rc.role_id,
+			rl.title,
+			rc.is_muted,
+			rc.is_typing
+		FROM room r
+		JOIN room_client rc ON r.id = rc.room_id
+		JOIN profiles p ON p.id = rc.profile_id
+		JOIN room_role rl ON rc.role_id = rl.id
+		WHERE rc.profile_id = $1
+	`
 	rows, err := r.db.QueryContext(ctx, query, profiles_id)
 
 	if err != nil {
@@ -59,55 +77,54 @@ func (r *MessageRepo) ChatsList(ctx context.Context, profiles_id int) ([]models.
 	}
 	defer rows.Close()
 
-	var chatsList []models.Chat
+	var roomList []models.RoomGeneralInfo
 	for rows.Next() {
-		var chat models.Chat
+		var room models.RoomGeneralInfo
 		err := rows.Scan(
-			&chat.Id,
-			&chat.MyProfileId,
-			&chat.User2ProfileId,
-			&chat.LastMessage,
-			&chat.IsRead,
-			&chat.CountNewMsg,
-			&chat.IsVisible,
+			&room.RoomId,
+			&room.RoomTitle,
+			&room.ClientId,
+			&room.ProfileId,
+			&room.ProfileName,
+			&room.ProfileSurname,
+			&room.RoleId,
+			&room.RoleName,
+			&room.IsMuted,
+			&room.IsTyping,
 		)
 		if err != nil {
 			return nil, err
 		}
 
-		chatsList = append(chatsList, chat)
-	}
-	return chatsList, nil
-}
-
-func (r *MessageRepo) SaveMessage(ctx context.Context, message *models.Message) (bool, error) {
-	query := "INSERT INTO messages (sender_id, receiver_id, message, created_at) VALUES ($1, $2, $3, NOW())"
-	_, err := r.db.Exec(query, message.SenderId, message.ReceiverId, message.Text)
-	return err == nil, err
-}
-
-func (r *MessageRepo) GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error) {
-	query := `
-		SELECT id, sender_id, receiver_id, message, created_at
-		FROM messages
-		WHERE (sender_id=$1 AND receiver_id=$2) OR (sender_id=$2 AND receiver_id=$1)
-		ORDER BY created_at
-	`
-	rows, err := r.db.QueryContext(ctx, query, user1Id, user2Id)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var messages []models.Message
-	for rows.Next() {
-		var msg models.Message
-		err := rows.Scan(&msg.Id, &msg.SenderId, &msg.ReceiverId, &msg.Text, &msg.Timestamp)
-		if err != nil {
-			return nil, err
-		}
-		messages = append(messages, msg)
+		roomList = append(roomList, room)
 	}
 
-	return messages, nil
+	return roomList, nil
 }
+
+// func (r *MessageRepo) SaveMessage(ctx context.Context, message *models.Message) (bool, error) {
+// 	query := ""
+// 	_, err := r.db.Exec(query, message.SenderId, message.ReceiverId, message.Text)
+// 	return err == nil, err
+// }
+
+// func (r *MessageRepo) GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error) {
+// 	query := ``
+// 	rows, err := r.db.QueryContext(ctx, query, user1Id, user2Id)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	defer rows.Close()
+
+// 	var messages []models.Message
+// 	for rows.Next() {
+// 		var msg models.Message
+// 		err := rows.Scan(&msg.Id, &msg.SenderId, &msg.ReceiverId, &msg.Text, &msg.Timestamp)
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 		messages = append(messages, msg)
+// 	}
+
+// 	return messages, nil
+// }
