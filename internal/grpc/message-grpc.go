@@ -8,7 +8,6 @@ import (
 )
 
 type Server struct {
-	// proto.UnimplementedMessageServiceServer
 	proto.UnimplementedMessageServiceServer
 	service service.IMessageService
 }
@@ -43,39 +42,3 @@ func (s *Server) RoomList(ctx context.Context, req *proto.RoomListRequest) (*pro
 
 	return &proto.RoomListResponse{RoomGeneral: protoRoomList}, nil
 }
-
-// func (s *Server) SendMessage(ctx context.Context, req *proto.SendMessageRequest) (*proto.SendMessageResponse, error) {
-// 	message := &models.Message{
-// 		SenderId:   int(req.SenderId),
-// 		ReceiverId: int(req.ReceiverId),
-// 		Text:       req.Text,
-// 	}
-
-// 	success, err := s.service.SaveMessage(ctx, message)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return &proto.SendMessageResponse{Success: success}, nil
-// }
-
-// func (s *Server) GetMessage(ctx context.Context, req *proto.GetMessageRequest) (*proto.GetMessageResponse, error) {
-// 	messages, err := s.service.GetMessage(ctx, int(req.User1Id), int(req.User2Id))
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	var protoMessages []*proto.Message
-// 	for _, msg := range messages {
-// 		message := &proto.Message{
-// 			Id:         int32(msg.Id),
-// 			SenderId:   int32(msg.SenderId),
-// 			ReceiverId: int32(msg.ReceiverId),
-// 			Text:       msg.Text,
-// 			Timestamp:  msg.Timestamp,
-// 		}
-// 		protoMessages = append(protoMessages, message)
-// 	}
-
-// 	return &proto.GetMessageResponse{Messages: protoMessages}, nil
-// }

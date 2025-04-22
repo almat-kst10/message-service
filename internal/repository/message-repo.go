@@ -11,9 +11,6 @@ import (
 )
 
 type IMessageRepo interface {
-	// SaveMessage(ctx context.Context, message *models.Message) (bool, error)
-	// GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error)
-	
 	RoomList(ctx context.Context, profiles_id int) ([]models.RoomGeneralInfo, error)
 	Close()
 }
@@ -101,30 +98,3 @@ func (r *MessageRepo) RoomList(ctx context.Context, profiles_id int) ([]models.R
 
 	return roomList, nil
 }
-
-// func (r *MessageRepo) SaveMessage(ctx context.Context, message *models.Message) (bool, error) {
-// 	query := ""
-// 	_, err := r.db.Exec(query, message.SenderId, message.ReceiverId, message.Text)
-// 	return err == nil, err
-// }
-
-// func (r *MessageRepo) GetMessage(ctx context.Context, user1Id, user2Id int) ([]models.Message, error) {
-// 	query := ``
-// 	rows, err := r.db.QueryContext(ctx, query, user1Id, user2Id)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	defer rows.Close()
-
-// 	var messages []models.Message
-// 	for rows.Next() {
-// 		var msg models.Message
-// 		err := rows.Scan(&msg.Id, &msg.SenderId, &msg.ReceiverId, &msg.Text, &msg.Timestamp)
-// 		if err != nil {
-// 			return nil, err
-// 		}
-// 		messages = append(messages, msg)
-// 	}
-
-// 	return messages, nil
-// }
