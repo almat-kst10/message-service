@@ -17,7 +17,7 @@ func NewMessageHandler(service service.IMessageService) *Server {
 	return &Server{service: service}
 }
 
-func (s *Server) ChatsList(ctx context.Context, req *proto.RoomListRequest) (*proto.RoomListResponse, error) {
+func (s *Server) RoomList(ctx context.Context, req *proto.RoomListRequest) (*proto.RoomListResponse, error) {
 	roomList, err := s.service.RoomList(ctx, int(req.ProfileId))
 	if err != nil {
 		return nil, err
