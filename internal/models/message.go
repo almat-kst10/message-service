@@ -25,7 +25,7 @@ type RoomRole struct {
 	Title string `json:"title"`
 }
 
-type RoomClient struct {
+type ClientRoom struct {
 	Id        int  `json:"id"`
 	RoomId    int  `json:"room_id"`
 	ProfileId int  `json:"profile_id"`

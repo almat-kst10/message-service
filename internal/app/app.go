@@ -11,6 +11,7 @@ import (
 	"github.com/almat-kst10/message-service/configs"
 	"github.com/almat-kst10/message-service/internal/repository"
 	"github.com/almat-kst10/message-service/internal/service"
+	"github.com/almat-kst10/message-service/pkg/db"
 	"github.com/almat-kst10/message-service/proto"
 	"google.golang.org/grpc"
 
@@ -19,21 +20,32 @@ import (
 )
 
 func Run(configs *configs.Configs) error {
-	repo, err := repository.NewRepositoryMessage(configs)
+	// ctx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
+	// defer cancel()
+
+	postgresClient, err := db.NewPostgresClient(configs)
 	if err != nil {
 		return err
 	}
-	defer repo.Close()
+	defer postgresClient.Close()
 
-	service := service.NewServiceMessage(repo)
-	grpcServer := msgGRPC.NewMessageHandler(service)
+
+	roomRepo := repo.NewRoomRepo(postgresClient)
+	roomService := service.NewRoomService(roomRepo)
+	
+	clientRoomRepo := repo.NewClientRoomRepo(postgresClient)
+	clientRoomService := service.NewClientRoomService(clientRoomRepo)
+
+	messageClientRepo := repo.NewMessageClientRepo(postgresClient)
+	messageClientService := service.NewMessageClientService(messageClientRepo)
+	
+	grpcServer := msgGRPC.NewMessageHandler(roomService, clientRoomService, messageClientService)
 
 	grpcPort := fmt.Sprintf(":%s", configs.GRPC.Port)
 	lis, err := net.Listen(configs.GRPC.ConnectType, grpcPort)
 	if err != nil {
 		return err
 	}
-	log.Println("gRPC сервер запущен на", grpcPort)
 
 	serv := grpc.NewServer()
 	proto.RegisterMessageServiceServer(serv, grpcServer)
@@ -56,8 +68,6 @@ func Run(configs *configs.Configs) error {
 
 	// Завершаем сервер корректно
 	serv.GracefulStop()
-
-	log.Println("gRPC сервер корректно завершил работу")
 
 	return nil
 }
