@@ -47,8 +47,9 @@ func (s *Server) RoomList(ctx context.Context, req *proto.RoomListRequest) (*pro
 	return &proto.RoomListResponse{RoomGeneral: protoRoomList}, nil
 }
 
-func (s *Server) RoomCreatePerson(ctx context.Context, req *proto.RoomCreatePersonRequest) (*proto.RoomCreateResponse, error) {
-	roomId, err := s.roomService.RoomCreate(ctx, req)
+
+func (s *Server) RoomCreateGroup(ctx context.Context, req *proto.RoomCreateGroupRequest) (*proto.RoomCreateResponse, error) {
+	roomId, err := s.roomService.RoomCreate(ctx, req.RoomTitle, int(req.ProfileId), 0)
 	if err != nil {
 		return nil, err
 	}
@@ -57,8 +58,8 @@ func (s *Server) RoomCreatePerson(ctx context.Context, req *proto.RoomCreatePers
 }
 
 
-func (s *Server) RoomCreateGroup(ctx context.Context, req *proto.RoomCreateGroupRequest) (*proto.RoomCreateResponse, error) {
-	roomId, err := s.roomService.RoomCreate(ctx, req)
+func (s *Server) RoomCreatePerson(ctx context.Context, req *proto.RoomCreatePersonRequest) (*proto.RoomCreateResponse, error) {
+	roomId, err := s.roomService.RoomCreate(ctx, req.RoomTitle, int(req.FirstProfileId), int(req.SecondProfileId))
 	if err != nil {
 		return nil, err
 	}

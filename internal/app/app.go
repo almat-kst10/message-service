@@ -29,16 +29,18 @@ func Run(configs *configs.Configs) error {
 	}
 	defer postgresClient.Close()
 
-
+	// repo
+	txRepo := repo.NewTxRepo(postgresClient)
 	roomRepo := repo.NewRoomRepo(postgresClient)
-	roomService := service.NewRoomService(roomRepo)
-	
 	clientRoomRepo := repo.NewClientRoomRepo(postgresClient)
-	clientRoomService := service.NewClientRoomService(clientRoomRepo)
-
 	messageClientRepo := repo.NewMessageClientRepo(postgresClient)
+
+	// service
+	roomService := service.NewRoomService(txRepo, roomRepo, clientRoomRepo)
+	clientRoomService := service.NewClientRoomService(clientRoomRepo)
 	messageClientService := service.NewMessageClientService(messageClientRepo)
 	
+	// handler
 	grpcServer := msgGRPC.NewMessageHandler(roomService, clientRoomService, messageClientService)
 
 	grpcPort := fmt.Sprintf(":%s", configs.GRPC.Port)

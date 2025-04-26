@@ -10,9 +10,9 @@ import (
 )
 
 type IClientRoomRepo interface {
-	ClientJoin(ctx context.Context, client models.ClientRoom) error
-	ClientDelete(ctx context.Context, client models.ClientRoom) error
-	ClientEdit(ctx context.Context, client models.ClientRoom) error
+	ClientJoin(ctx context.Context, client *models.ClientRoom) error
+	ClientDelete(ctx context.Context, client *models.ClientRoom) error
+	ClientEdit(ctx context.Context, client *models.ClientRoom) error
 }
 
 type ClientRoomRepo struct {
@@ -25,7 +25,7 @@ func NewClientRoomRepo(db *sql.DB) IClientRoomRepo {
 	}
 }
 
-func (r *ClientRoomRepo) ClientJoin(ctx context.Context, client models.ClientRoom) error {
+func (r *ClientRoomRepo) ClientJoin(ctx context.Context, client *models.ClientRoom) error {
 	query := "INSERT INTO client_room(room_id, profile_id, role_id, is_muted, is_typing) VALUES($1, $2, $3, $4, $5)"
 	result, err := r.db.ExecContext(ctx, query, client.RoomId, client.ProfileId, client.RoleId, client.IsMuted, client.IsTyping)
 	if err != nil {
@@ -39,7 +39,7 @@ func (r *ClientRoomRepo) ClientJoin(ctx context.Context, client models.ClientRoo
 	return nil
 }
 
-func (r *ClientRoomRepo) ClientDelete(ctx context.Context, client models.ClientRoom) error {
+func (r *ClientRoomRepo) ClientDelete(ctx context.Context, client *models.ClientRoom) error {
 	query := "DELETE FROM client_room WHERE room_id = $1 AND profile_id = $2"
 	result, err := r.db.ExecContext(ctx, query, client.RoomId, client.ProfileId)
 	if err != nil {
@@ -53,7 +53,7 @@ func (r *ClientRoomRepo) ClientDelete(ctx context.Context, client models.ClientR
 	return nil
 }
 
-func (r *ClientRoomRepo) ClientEdit(ctx context.Context, client models.ClientRoom) error {
+func (r *ClientRoomRepo) ClientEdit(ctx context.Context, client *models.ClientRoom) error {
 	var query strings.Builder
 	var args []interface{}
 	argIndex := 1
