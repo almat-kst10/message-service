@@ -55,5 +55,5 @@ func (s *Server) RoomCreate(ctx context.Context, req *proto.RoomCreateRequest) (
 		return nil, err
 	}
 
-	return &proto.RoomCreateResponse{Result: "Room success created"}
+	return &proto.RoomCreateResponse{Result: "Room success created"}, nil
 }
