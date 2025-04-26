@@ -53,5 +53,5 @@ func (s *Server) RoomCreate(ctx context.Context, req *proto.RoomCreateRequest) (
 		return nil, err
 	}
 
-	return &proto.RoomCreateResponse{Result: roomId}, nil
+	return &proto.RoomCreateResponse{RoomId: int32(roomId)}, nil
 }
