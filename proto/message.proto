@@ -23,8 +23,6 @@ message RoomGeneral {
     string room_tile = 2;
     int32 client_id = 3;
     int32 profile_id = 4;
-    string profile_name = 5;
-    string profile_surname = 6;
     int32 role_id = 7;
     string role_name = 8;
     bool is_muted = 9;

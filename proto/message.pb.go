@@ -110,19 +110,17 @@ func (x *RoomListResponse) GetRoomGeneral() []*RoomGeneral {
 }
 
 type RoomGeneral struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	RoomId         int32                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
-	RoomTile       string                 `protobuf:"bytes,2,opt,name=room_tile,json=roomTile,proto3" json:"room_tile,omitempty"`
-	ClientId       int32                  `protobuf:"varint,3,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
-	ProfileId      int32                  `protobuf:"varint,4,opt,name=profile_id,json=profileId,proto3" json:"profile_id,omitempty"`
-	ProfileName    string                 `protobuf:"bytes,5,opt,name=profile_name,json=profileName,proto3" json:"profile_name,omitempty"`
-	ProfileSurname string                 `protobuf:"bytes,6,opt,name=profile_surname,json=profileSurname,proto3" json:"profile_surname,omitempty"`
-	RoleId         int32                  `protobuf:"varint,7,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
-	RoleName       string                 `protobuf:"bytes,8,opt,name=role_name,json=roleName,proto3" json:"role_name,omitempty"`
-	IsMuted        bool                   `protobuf:"varint,9,opt,name=is_muted,json=isMuted,proto3" json:"is_muted,omitempty"`
-	IsTyping       bool                   `protobuf:"varint,10,opt,name=is_typing,json=isTyping,proto3" json:"is_typing,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int32                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	RoomTile      string                 `protobuf:"bytes,2,opt,name=room_tile,json=roomTile,proto3" json:"room_tile,omitempty"`
+	ClientId      int32                  `protobuf:"varint,3,opt,name=client_id,json=clientId,proto3" json:"client_id,omitempty"`
+	ProfileId     int32                  `protobuf:"varint,4,opt,name=profile_id,json=profileId,proto3" json:"profile_id,omitempty"`
+	RoleId        int32                  `protobuf:"varint,7,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
+	RoleName      string                 `protobuf:"bytes,8,opt,name=role_name,json=roleName,proto3" json:"role_name,omitempty"`
+	IsMuted       bool                   `protobuf:"varint,9,opt,name=is_muted,json=isMuted,proto3" json:"is_muted,omitempty"`
+	IsTyping      bool                   `protobuf:"varint,10,opt,name=is_typing,json=isTyping,proto3" json:"is_typing,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *RoomGeneral) Reset() {
@@ -181,20 +179,6 @@ func (x *RoomGeneral) GetProfileId() int32 {
 		return x.ProfileId
 	}
 	return 0
-}
-
-func (x *RoomGeneral) GetProfileName() string {
-	if x != nil {
-		return x.ProfileName
-	}
-	return ""
-}
-
-func (x *RoomGeneral) GetProfileSurname() string {
-	if x != nil {
-		return x.ProfileSurname
-	}
-	return ""
 }
 
 func (x *RoomGeneral) GetRoleId() int32 {
@@ -410,15 +394,13 @@ const file_message_proto_rawDesc = "" +
 	"\n" +
 	"profile_id\x18\x01 \x01(\x05R\tprofileId\"I\n" +
 	"\x10RoomListResponse\x125\n" +
-	"\froom_general\x18\x01 \x03(\v2\x12.proto.RoomGeneralR\vroomGeneral\"\xb9\x02\n" +
+	"\froom_general\x18\x01 \x03(\v2\x12.proto.RoomGeneralR\vroomGeneral\"\xed\x01\n" +
 	"\vRoomGeneral\x12\x17\n" +
 	"\aroom_id\x18\x01 \x01(\x05R\x06roomId\x12\x1b\n" +
 	"\troom_tile\x18\x02 \x01(\tR\broomTile\x12\x1b\n" +
 	"\tclient_id\x18\x03 \x01(\x05R\bclientId\x12\x1d\n" +
 	"\n" +
-	"profile_id\x18\x04 \x01(\x05R\tprofileId\x12!\n" +
-	"\fprofile_name\x18\x05 \x01(\tR\vprofileName\x12'\n" +
-	"\x0fprofile_surname\x18\x06 \x01(\tR\x0eprofileSurname\x12\x17\n" +
+	"profile_id\x18\x04 \x01(\x05R\tprofileId\x12\x17\n" +
 	"\arole_id\x18\a \x01(\x05R\x06roleId\x12\x1b\n" +
 	"\trole_name\x18\b \x01(\tR\broleName\x12\x19\n" +
 	"\bis_muted\x18\t \x01(\bR\aisMuted\x12\x1b\n" +

@@ -35,8 +35,6 @@ func (s *Server) RoomList(ctx context.Context, req *proto.RoomListRequest) (*pro
 			RoomTile:       room.RoomTitle,
 			ClientId:       int32(room.ClientId),
 			ProfileId:      int32(room.ProfileId),
-			ProfileName:    room.ProfileName,
-			ProfileSurname: room.ProfileSurname,
 			RoleId:         int32(room.RoleId),
 			RoleName:       room.RoleName,
 			IsMuted:        room.IsMuted,
