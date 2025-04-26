@@ -8,9 +8,9 @@ import (
 )
 
 type IClientRoomService interface {
-	ClientJoin(ctx context.Context, client models.ClientRoom) error
-	ClientDelete(ctx context.Context, client models.ClientRoom) error
-	ClientEdit(ctx context.Context, client models.ClientRoom) error
+	ClientJoin(ctx context.Context, client *models.ClientRoom) error
+	ClientDelete(ctx context.Context, client *models.ClientRoom) error
+	ClientEdit(ctx context.Context, client *models.ClientRoom) error
 }
 
 type ClientRoomService struct {
@@ -23,14 +23,14 @@ func NewClientRoomService(clientRoomRepo repo.IClientRoomRepo) IClientRoomServic
 	}
 }
 
-func (s *ClientRoomService) ClientJoin(ctx context.Context, client models.ClientRoom) error {
+func (s *ClientRoomService) ClientJoin(ctx context.Context, client *models.ClientRoom) error {
 	return s.clientRoomRepo.ClientJoin(ctx, client)
 }
 
-func (s *ClientRoomService) ClientDelete(ctx context.Context, client models.ClientRoom) error {
+func (s *ClientRoomService) ClientDelete(ctx context.Context, client *models.ClientRoom) error {
 	return s.clientRoomRepo.ClientDelete(ctx, client)
 }
 
-func (s *ClientRoomService) ClientEdit(ctx context.Context, client models.ClientRoom) error {
+func (s *ClientRoomService) ClientEdit(ctx context.Context, client *models.ClientRoom) error {
 	return s.clientRoomRepo.ClientEdit(ctx, client)
 }
