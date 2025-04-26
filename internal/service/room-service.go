@@ -9,7 +9,7 @@ import (
 
 type IRoomService interface {
 	RoomList(ctx context.Context, profiles_id int) ([]*models.RoomGeneralInfo, error)
-	RoomCreate(ctx context.Context, roomTitle string) error
+	RoomCreate(ctx context.Context, roomTitle string) (int, error)
 	RoomDelete(ctx context.Context, roomId int) error
 }
 
@@ -21,7 +21,7 @@ func NewRoomService(repo repo.IRoomRepo) IRoomService {
 	return &RoomService{repo: repo}
 }
 
-func (s *RoomService) RoomCreate(ctx context.Context, roomTitle string) error {
+func (s *RoomService) RoomCreate(ctx context.Context, roomTitle string) (int, error) {
 	return s.repo.RoomCreate(ctx, roomTitle)
 }
 

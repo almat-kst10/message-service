@@ -255,7 +255,7 @@ func (x *RoomCreateRequest) GetRoomTitle() string {
 
 type RoomCreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	RoomId        int32                  `protobuf:"varint,1,opt,name=roomId,proto3" json:"roomId,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -290,11 +290,11 @@ func (*RoomCreateResponse) Descriptor() ([]byte, []int) {
 	return file_message_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *RoomCreateResponse) GetResult() string {
+func (x *RoomCreateResponse) GetRoomId() int32 {
 	if x != nil {
-		return x.Result
+		return x.RoomId
 	}
-	return ""
+	return 0
 }
 
 type RoomDeleteRequest struct {
@@ -410,7 +410,7 @@ const file_message_proto_rawDesc = "" +
 	"\n" +
 	"room_title\x18\x01 \x01(\tR\troomTitle\",\n" +
 	"\x12RoomCreateResponse\x12\x16\n" +
-	"\x06result\x18\x01 \x01(\tR\x06result\",\n" +
+	"\x06roomId\x18\x01 \x01(\x05R\x06roomId\",\n" +
 	"\x11RoomDeleteRequest\x12\x17\n" +
 	"\aroom_id\x18\x01 \x01(\x05R\x06roomId\",\n" +
 	"\x12RoomDeleteResponse\x12\x16\n" +

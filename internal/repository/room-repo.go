@@ -10,7 +10,7 @@ import (
 
 type IRoomRepo interface {
 	RoomList(ctx context.Context, profiles_id int) ([]*models.RoomGeneralInfo, error)
-	RoomCreate(ctx context.Context, roomTitle string) error
+	RoomCreate(ctx context.Context, roomTitle string) (int, error)
 	RoomDelete(ctx context.Context, roomId int) error
 }
 
@@ -70,18 +70,17 @@ func (r *RoomRepo) RoomList(ctx context.Context, profiles_id int) ([]*models.Roo
 	return roomList, nil
 }
 
-func (r *RoomRepo) RoomCreate(ctx context.Context, roomTitle string) error {
-	query := "INSERT INTO room(title) VALUES($1)"
-	result, err := r.db.ExecContext(ctx, query, roomTitle)
+func (r *RoomRepo) RoomCreate(ctx context.Context, roomTitle string) (int, error) {
+	query := "INSERT INTO room(title) VALUES($1) RETURNING id"
+
+	var id int
+	err := r.db.QueryRowContext(ctx, query, roomTitle).Scan(&id)
+	// result, err := r.db.ExecContext(ctx, query, roomTitle)
 	if err != nil {
-		return err
+		return 0, fmt.Errorf("error create room: %w", err)
 	}
 
-	if rowsAffected, err := result.RowsAffected(); err != nil || rowsAffected == 0 {
-		return fmt.Errorf("error create room %s", err)
-	}
-
-	return nil
+	return id, nil
 }
 
 func (r *RoomRepo) RoomDelete(ctx context.Context, roomId int) error {

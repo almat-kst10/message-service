@@ -48,10 +48,10 @@ func (s *Server) RoomList(ctx context.Context, req *proto.RoomListRequest) (*pro
 }
 
 func (s *Server) RoomCreate(ctx context.Context, req *proto.RoomCreateRequest) (*proto.RoomCreateResponse, error) {
-	err := s.roomService.RoomCreate(ctx, req.RoomTitle)
+	roomId, err := s.roomService.RoomCreate(ctx, req.RoomTitle)
 	if err != nil {
 		return nil, err
 	}
 
-	return &proto.RoomCreateResponse{Result: "Room success created"}, nil
+	return &proto.RoomCreateResponse{Result: roomId}, nil
 }
