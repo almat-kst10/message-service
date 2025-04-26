@@ -6,7 +6,8 @@ option go_package = "github.com/almat-kst10/message_micro/proto";
 
 service MessageService {
     rpc RoomList (RoomListRequest) returns (RoomListResponse);
-    rpc RoomCreate (RoomCreateRequest) returns (RoomCreateResponse);
+    rpc RoomCreatePerson (RoomCreatePersonRequest) returns (RoomCreateResponse);
+    rpc RoomCreateGroup (RoomCreateGroupRequest) returns (RoomCreateResponse);
     rpc RoomDelete (RoomDeleteRequest) returns (RoomDeleteResponse);
 }
 
@@ -29,8 +30,15 @@ message RoomGeneral {
     bool is_typing = 10; 
 }
 
-message RoomCreateRequest {
-    string room_title = 1;
+message RoomCreatePersonRequest {
+    int32 first_profile_id = 1;
+    int32 second_profile_id = 2;
+    string room_title = 3;
+}
+
+message RoomCreateGroupRequest {
+    int32 profile_id = 1;
+    string room_title = 2;
 }
 
 message RoomCreateResponse {

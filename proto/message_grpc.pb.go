@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MessageService_RoomList_FullMethodName   = "/proto.MessageService/RoomList"
-	MessageService_RoomCreate_FullMethodName = "/proto.MessageService/RoomCreate"
-	MessageService_RoomDelete_FullMethodName = "/proto.MessageService/RoomDelete"
+	MessageService_RoomList_FullMethodName         = "/proto.MessageService/RoomList"
+	MessageService_RoomCreatePerson_FullMethodName = "/proto.MessageService/RoomCreatePerson"
+	MessageService_RoomCreateGroup_FullMethodName  = "/proto.MessageService/RoomCreateGroup"
+	MessageService_RoomDelete_FullMethodName       = "/proto.MessageService/RoomDelete"
 )
 
 // MessageServiceClient is the client API for MessageService service.
@@ -29,7 +30,8 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MessageServiceClient interface {
 	RoomList(ctx context.Context, in *RoomListRequest, opts ...grpc.CallOption) (*RoomListResponse, error)
-	RoomCreate(ctx context.Context, in *RoomCreateRequest, opts ...grpc.CallOption) (*RoomCreateResponse, error)
+	RoomCreatePerson(ctx context.Context, in *RoomCreatePersonRequest, opts ...grpc.CallOption) (*RoomCreateResponse, error)
+	RoomCreateGroup(ctx context.Context, in *RoomCreateGroupRequest, opts ...grpc.CallOption) (*RoomCreateResponse, error)
 	RoomDelete(ctx context.Context, in *RoomDeleteRequest, opts ...grpc.CallOption) (*RoomDeleteResponse, error)
 }
 
@@ -51,10 +53,20 @@ func (c *messageServiceClient) RoomList(ctx context.Context, in *RoomListRequest
 	return out, nil
 }
 
-func (c *messageServiceClient) RoomCreate(ctx context.Context, in *RoomCreateRequest, opts ...grpc.CallOption) (*RoomCreateResponse, error) {
+func (c *messageServiceClient) RoomCreatePerson(ctx context.Context, in *RoomCreatePersonRequest, opts ...grpc.CallOption) (*RoomCreateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(RoomCreateResponse)
-	err := c.cc.Invoke(ctx, MessageService_RoomCreate_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, MessageService_RoomCreatePerson_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageServiceClient) RoomCreateGroup(ctx context.Context, in *RoomCreateGroupRequest, opts ...grpc.CallOption) (*RoomCreateResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RoomCreateResponse)
+	err := c.cc.Invoke(ctx, MessageService_RoomCreateGroup_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,7 +88,8 @@ func (c *messageServiceClient) RoomDelete(ctx context.Context, in *RoomDeleteReq
 // for forward compatibility.
 type MessageServiceServer interface {
 	RoomList(context.Context, *RoomListRequest) (*RoomListResponse, error)
-	RoomCreate(context.Context, *RoomCreateRequest) (*RoomCreateResponse, error)
+	RoomCreatePerson(context.Context, *RoomCreatePersonRequest) (*RoomCreateResponse, error)
+	RoomCreateGroup(context.Context, *RoomCreateGroupRequest) (*RoomCreateResponse, error)
 	RoomDelete(context.Context, *RoomDeleteRequest) (*RoomDeleteResponse, error)
 	mustEmbedUnimplementedMessageServiceServer()
 }
@@ -91,8 +104,11 @@ type UnimplementedMessageServiceServer struct{}
 func (UnimplementedMessageServiceServer) RoomList(context.Context, *RoomListRequest) (*RoomListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoomList not implemented")
 }
-func (UnimplementedMessageServiceServer) RoomCreate(context.Context, *RoomCreateRequest) (*RoomCreateResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method RoomCreate not implemented")
+func (UnimplementedMessageServiceServer) RoomCreatePerson(context.Context, *RoomCreatePersonRequest) (*RoomCreateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoomCreatePerson not implemented")
+}
+func (UnimplementedMessageServiceServer) RoomCreateGroup(context.Context, *RoomCreateGroupRequest) (*RoomCreateResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RoomCreateGroup not implemented")
 }
 func (UnimplementedMessageServiceServer) RoomDelete(context.Context, *RoomDeleteRequest) (*RoomDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoomDelete not implemented")
@@ -136,20 +152,38 @@ func _MessageService_RoomList_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
-func _MessageService_RoomCreate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RoomCreateRequest)
+func _MessageService_RoomCreatePerson_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoomCreatePersonRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MessageServiceServer).RoomCreate(ctx, in)
+		return srv.(MessageServiceServer).RoomCreatePerson(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: MessageService_RoomCreate_FullMethodName,
+		FullMethod: MessageService_RoomCreatePerson_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MessageServiceServer).RoomCreate(ctx, req.(*RoomCreateRequest))
+		return srv.(MessageServiceServer).RoomCreatePerson(ctx, req.(*RoomCreatePersonRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageService_RoomCreateGroup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RoomCreateGroupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).RoomCreateGroup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_RoomCreateGroup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).RoomCreateGroup(ctx, req.(*RoomCreateGroupRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -184,8 +218,12 @@ var MessageService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _MessageService_RoomList_Handler,
 		},
 		{
-			MethodName: "RoomCreate",
-			Handler:    _MessageService_RoomCreate_Handler,
+			MethodName: "RoomCreatePerson",
+			Handler:    _MessageService_RoomCreatePerson_Handler,
+		},
+		{
+			MethodName: "RoomCreateGroup",
+			Handler:    _MessageService_RoomCreateGroup_Handler,
 		},
 		{
 			MethodName: "RoomDelete",
