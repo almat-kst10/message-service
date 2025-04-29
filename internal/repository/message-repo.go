@@ -39,7 +39,13 @@ func (r *MessageClientRepo) SetMessage(ctx context.Context, message models.Messa
 
 
 func (r *MessageClientRepo) GetMessage(ctx context.Context, message models.MessageClientRoom) ([]*models.MessageClientRoom, error) {
-	query := "SELECT id, room_id, profile_id, text, created_at FROM message_client_room WHERE room_id = $1 AND profile_id = $2"
+	query := `
+		SELECT 
+			mcr.id, mcr.room_id, mcr.profile_id, mcr.text, mcr.created_at, p.name, p.surname
+		FROM message_client_room mcr
+		JOIN profile p
+		ON p.id = mcr.profile_id
+		WHERE room_id = $1 AND profile_id = $2`
 	rows, err := r.db.QueryContext(ctx, query, message.RoomId, message.ProfileId)
 	if err != nil {
 		return nil, err
@@ -49,6 +55,8 @@ func (r *MessageClientRepo) GetMessage(ctx context.Context, message models.Messa
 	var messages []*models.MessageClientRoom
 	for rows.Next() {
 		message := models.MessageClientRoom{}
+		var name string
+		var surname string
 
 		err := rows.Scan(
 			&message.Id,
@@ -56,7 +64,11 @@ func (r *MessageClientRepo) GetMessage(ctx context.Context, message models.Messa
 			&message.ProfileId,
 			&message.Text,
 			&message.CreatedAt,
+			&name,
+			&surname,
 		)
+
+		message.FullName = fmt.Sprintf("%s %s", name, surname)
 
 		if err != nil {
 			return nil, err

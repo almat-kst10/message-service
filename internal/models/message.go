@@ -38,6 +38,7 @@ type MessageClientRoom struct {
 	Id        int       `json:"id"`
 	RoomId    int       `json:"room_id"`
 	ProfileId int       `json:"profile_id"`
+	FullName  string    `json:"full_name"`
 	Text      string    `json:"text"`
 	CreatedAt time.Time `json:"created_at"`
 }
