@@ -117,8 +117,8 @@ type RoomGeneral struct {
 	ProfileId     int32                  `protobuf:"varint,4,opt,name=profile_id,json=profileId,proto3" json:"profile_id,omitempty"`
 	RoleId        int32                  `protobuf:"varint,7,opt,name=role_id,json=roleId,proto3" json:"role_id,omitempty"`
 	RoleName      string                 `protobuf:"bytes,8,opt,name=role_name,json=roleName,proto3" json:"role_name,omitempty"`
-	IsMuted       *bool                  `protobuf:"varint,9,opt,name=is_muted,json=isMuted,proto3,oneof" json:"is_muted,omitempty"`
-	IsTyping      *bool                  `protobuf:"varint,10,opt,name=is_typing,json=isTyping,proto3,oneof" json:"is_typing,omitempty"`
+	IsMuted       bool                   `protobuf:"varint,9,opt,name=is_muted,json=isMuted,proto3" json:"is_muted,omitempty"`
+	IsTyping      bool                   `protobuf:"varint,10,opt,name=is_typing,json=isTyping,proto3" json:"is_typing,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -196,15 +196,15 @@ func (x *RoomGeneral) GetRoleName() string {
 }
 
 func (x *RoomGeneral) GetIsMuted() bool {
-	if x != nil && x.IsMuted != nil {
-		return *x.IsMuted
+	if x != nil {
+		return x.IsMuted
 	}
 	return false
 }
 
 func (x *RoomGeneral) GetIsTyping() bool {
-	if x != nil && x.IsTyping != nil {
-		return *x.IsTyping
+	if x != nil {
+		return x.IsTyping
 	}
 	return false
 }
@@ -746,7 +746,7 @@ const file_message_proto_rawDesc = "" +
 	"\n" +
 	"profile_id\x18\x01 \x01(\x05R\tprofileId\"I\n" +
 	"\x10RoomListResponse\x125\n" +
-	"\froom_general\x18\x01 \x03(\v2\x12.proto.RoomGeneralR\vroomGeneral\"\x92\x02\n" +
+	"\froom_general\x18\x01 \x03(\v2\x12.proto.RoomGeneralR\vroomGeneral\"\xed\x01\n" +
 	"\vRoomGeneral\x12\x17\n" +
 	"\aroom_id\x18\x01 \x01(\x05R\x06roomId\x12\x1b\n" +
 	"\troom_tile\x18\x02 \x01(\tR\broomTile\x12\x1b\n" +
@@ -754,13 +754,10 @@ const file_message_proto_rawDesc = "" +
 	"\n" +
 	"profile_id\x18\x04 \x01(\x05R\tprofileId\x12\x17\n" +
 	"\arole_id\x18\a \x01(\x05R\x06roleId\x12\x1b\n" +
-	"\trole_name\x18\b \x01(\tR\broleName\x12\x1e\n" +
-	"\bis_muted\x18\t \x01(\bH\x00R\aisMuted\x88\x01\x01\x12 \n" +
+	"\trole_name\x18\b \x01(\tR\broleName\x12\x19\n" +
+	"\bis_muted\x18\t \x01(\bR\aisMuted\x12\x1b\n" +
 	"\tis_typing\x18\n" +
-	" \x01(\bH\x01R\bisTyping\x88\x01\x01B\v\n" +
-	"\t_is_mutedB\f\n" +
-	"\n" +
-	"_is_typing\"\x8e\x01\n" +
+	" \x01(\bR\bisTyping\"\x8e\x01\n" +
 	"\x17RoomCreatePersonRequest\x12(\n" +
 	"\x10first_profile_id\x18\x01 \x01(\x05R\x0efirstProfileId\x12*\n" +
 	"\x11second_profile_id\x18\x02 \x01(\x05R\x0fsecondProfileId\x12\x1d\n" +
@@ -864,7 +861,6 @@ func file_message_proto_init() {
 	if File_message_proto != nil {
 		return
 	}
-	file_message_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -67,7 +67,7 @@ func (s *Server) RoomCreatePerson(ctx context.Context, req *proto.RoomCreatePers
 }
 
 func (s *Server) ListMessageByRoom(ctx context.Context, req *proto.ListMessageByRoomRequest) (*proto.GetListMessageByRoomResponse, error) {
-	message := &models.MessageClientRoom{
+	message := models.MessageClientRoom{
 		RoomId: int(req.RoomId),
 		ProfileId: int(req.ProfileId),
 	}
@@ -76,7 +76,7 @@ func (s *Server) ListMessageByRoom(ctx context.Context, req *proto.ListMessageBy
 		return nil, err
 	}
 
-	var resultList []*proto.GetListMessageByRoomResponse
+	var resultList []*proto.Message
 	for _, message := range messageList {
 		protoMsg := &proto.Message{
 			Id: int32(message.Id),
@@ -84,19 +84,19 @@ func (s *Server) ListMessageByRoom(ctx context.Context, req *proto.ListMessageBy
 			ProfileId: int32(message.ProfileId),
 			FullName: message.FullName,
 			Text: message.Text,
-			CreatedAt: message.CreatedAt,
+			CreatedAt: message.CreatedAt.GoString(),
 		}
 
 		resultList = append(resultList, protoMsg)
 	}
 
-	return resultList, nil
+	return &proto.GetListMessageByRoomResponse{Message: resultList}, nil
 }
 
 func (s *Server) SetMessage(ctx context.Context, req *proto.SetMessageRequest) (*proto.SetMessageResponse, error) {
 	msg := models.MessageClientRoom{
 		RoomId: int(req.RoomId),
-		ProfileId: (req.ProfileId),
+		ProfileId: int(req.ProfileId),
 		Text: req.Text,
 	}
 	err := s.messageClient.SetMessage(ctx, msg)
