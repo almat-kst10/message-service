@@ -66,7 +66,7 @@ func (s *Server) RoomCreatePerson(ctx context.Context, req *proto.RoomCreatePers
 	return &proto.RoomCreateResponse{RoomId: int32(roomId)}, nil
 }
 
-func (s *Server) SetMessageClient(ctx context.Context, req *proto.ListMessageByRoomRequest) (*proto.GetListMessageByRoomResponse, error) {
+func (s *Server) ListMessageByRoom(ctx context.Context, req *proto.ListMessageByRoomRequest) (*proto.GetListMessageByRoomResponse, error) {
 	message := &models.MessageClientRoom{
 		RoomId: int(req.RoomId),
 		ProfileId: int(req.ProfileId),
@@ -91,4 +91,18 @@ func (s *Server) SetMessageClient(ctx context.Context, req *proto.ListMessageByR
 	}
 
 	return resultList, nil
+}
+
+func (s *Server) SetMessage(ctx context.Context, req *proto.SetMessageRequest) (*proto.SetMessageResponse, error) {
+	msg := models.MessageClientRoom{
+		RoomId: int(req.RoomId),
+		ProfileId: (req.ProfileId),
+		Text: req.Text,
+	}
+	err := s.messageClient.SetMessage(ctx, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	return &proto.SetMessageResponse{Result: "Success"}, nil
 }

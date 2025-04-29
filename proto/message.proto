@@ -10,6 +10,7 @@ service MessageService {
     rpc RoomCreateGroup (RoomCreateGroupRequest) returns (RoomCreateResponse);
     rpc RoomDelete (RoomDeleteRequest) returns (RoomDeleteResponse);
     rpc ListMessageByRoom (ListMessageByRoomRequest) returns (GetListMessageByRoomResponse);
+    rpc SetMessage (SetMessageRequest) returns (SetMessageResponse);
 }
 
 message RoomListRequest {
@@ -70,4 +71,14 @@ message Message {
     string full_name = 4;
     string text = 5;
     string created_at = 6;
+}
+
+message SetMessageRequest {
+    int32 room_id = 1;
+    int32 profile_id = 2;
+    string text = 3;
+}
+
+message SetMessageResponse {
+    string result = 1;
 }

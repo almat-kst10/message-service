@@ -19,10 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	MessageService_RoomList_FullMethodName         = "/proto.MessageService/RoomList"
-	MessageService_RoomCreatePerson_FullMethodName = "/proto.MessageService/RoomCreatePerson"
-	MessageService_RoomCreateGroup_FullMethodName  = "/proto.MessageService/RoomCreateGroup"
-	MessageService_RoomDelete_FullMethodName       = "/proto.MessageService/RoomDelete"
+	MessageService_RoomList_FullMethodName          = "/proto.MessageService/RoomList"
+	MessageService_RoomCreatePerson_FullMethodName  = "/proto.MessageService/RoomCreatePerson"
+	MessageService_RoomCreateGroup_FullMethodName   = "/proto.MessageService/RoomCreateGroup"
+	MessageService_RoomDelete_FullMethodName        = "/proto.MessageService/RoomDelete"
+	MessageService_ListMessageByRoom_FullMethodName = "/proto.MessageService/ListMessageByRoom"
+	MessageService_SetMessage_FullMethodName        = "/proto.MessageService/SetMessage"
 )
 
 // MessageServiceClient is the client API for MessageService service.
@@ -33,6 +35,8 @@ type MessageServiceClient interface {
 	RoomCreatePerson(ctx context.Context, in *RoomCreatePersonRequest, opts ...grpc.CallOption) (*RoomCreateResponse, error)
 	RoomCreateGroup(ctx context.Context, in *RoomCreateGroupRequest, opts ...grpc.CallOption) (*RoomCreateResponse, error)
 	RoomDelete(ctx context.Context, in *RoomDeleteRequest, opts ...grpc.CallOption) (*RoomDeleteResponse, error)
+	ListMessageByRoom(ctx context.Context, in *ListMessageByRoomRequest, opts ...grpc.CallOption) (*GetListMessageByRoomResponse, error)
+	SetMessage(ctx context.Context, in *SetMessageRequest, opts ...grpc.CallOption) (*SetMessageResponse, error)
 }
 
 type messageServiceClient struct {
@@ -83,6 +87,26 @@ func (c *messageServiceClient) RoomDelete(ctx context.Context, in *RoomDeleteReq
 	return out, nil
 }
 
+func (c *messageServiceClient) ListMessageByRoom(ctx context.Context, in *ListMessageByRoomRequest, opts ...grpc.CallOption) (*GetListMessageByRoomResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetListMessageByRoomResponse)
+	err := c.cc.Invoke(ctx, MessageService_ListMessageByRoom_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageServiceClient) SetMessage(ctx context.Context, in *SetMessageRequest, opts ...grpc.CallOption) (*SetMessageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetMessageResponse)
+	err := c.cc.Invoke(ctx, MessageService_SetMessage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MessageServiceServer is the server API for MessageService service.
 // All implementations must embed UnimplementedMessageServiceServer
 // for forward compatibility.
@@ -91,6 +115,8 @@ type MessageServiceServer interface {
 	RoomCreatePerson(context.Context, *RoomCreatePersonRequest) (*RoomCreateResponse, error)
 	RoomCreateGroup(context.Context, *RoomCreateGroupRequest) (*RoomCreateResponse, error)
 	RoomDelete(context.Context, *RoomDeleteRequest) (*RoomDeleteResponse, error)
+	ListMessageByRoom(context.Context, *ListMessageByRoomRequest) (*GetListMessageByRoomResponse, error)
+	SetMessage(context.Context, *SetMessageRequest) (*SetMessageResponse, error)
 	mustEmbedUnimplementedMessageServiceServer()
 }
 
@@ -112,6 +138,12 @@ func (UnimplementedMessageServiceServer) RoomCreateGroup(context.Context, *RoomC
 }
 func (UnimplementedMessageServiceServer) RoomDelete(context.Context, *RoomDeleteRequest) (*RoomDeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RoomDelete not implemented")
+}
+func (UnimplementedMessageServiceServer) ListMessageByRoom(context.Context, *ListMessageByRoomRequest) (*GetListMessageByRoomResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListMessageByRoom not implemented")
+}
+func (UnimplementedMessageServiceServer) SetMessage(context.Context, *SetMessageRequest) (*SetMessageResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetMessage not implemented")
 }
 func (UnimplementedMessageServiceServer) mustEmbedUnimplementedMessageServiceServer() {}
 func (UnimplementedMessageServiceServer) testEmbeddedByValue()                        {}
@@ -206,6 +238,42 @@ func _MessageService_RoomDelete_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MessageService_ListMessageByRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMessageByRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).ListMessageByRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_ListMessageByRoom_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).ListMessageByRoom(ctx, req.(*ListMessageByRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageService_SetMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).SetMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_SetMessage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).SetMessage(ctx, req.(*SetMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MessageService_ServiceDesc is the grpc.ServiceDesc for MessageService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +296,14 @@ var MessageService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RoomDelete",
 			Handler:    _MessageService_RoomDelete_Handler,
+		},
+		{
+			MethodName: "ListMessageByRoom",
+			Handler:    _MessageService_ListMessageByRoom_Handler,
+		},
+		{
+			MethodName: "SetMessage",
+			Handler:    _MessageService_SetMessage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
