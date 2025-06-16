@@ -82,3 +82,4 @@ message SetMessageRequest {
 message SetMessageResponse {
     string result = 1;
 }
+

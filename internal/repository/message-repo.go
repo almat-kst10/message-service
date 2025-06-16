@@ -43,9 +43,9 @@ func (r *MessageClientRepo) GetMessage(ctx context.Context, message models.Messa
 		SELECT 
 			mcr.id, mcr.room_id, mcr.profile_id, mcr.text, mcr.created_at, p.name, p.surname
 		FROM message_client_room mcr
-		JOIN profile p
+		JOIN profiles p
 		ON p.id = mcr.profile_id
-		WHERE room_id = $1 AND profile_id = $2`
+		WHERE room_id = $1 AND profile_id != $2`
 	rows, err := r.db.QueryContext(ctx, query, message.RoomId, message.ProfileId)
 	if err != nil {
 		return nil, err

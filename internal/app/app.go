@@ -20,9 +20,6 @@ import (
 )
 
 func Run(configs *configs.Configs) error {
-	// ctx, cancel := context.WithTimeout(context.Background(), 10 * time.Second)
-	// defer cancel()
-
 	postgresClient, err := db.NewPostgresClient(configs)
 	if err != nil {
 		return err

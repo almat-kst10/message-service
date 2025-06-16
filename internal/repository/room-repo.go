@@ -75,7 +75,6 @@ func (r *RoomRepo) RoomCreate(ctx context.Context, roomTitle string) (int, error
 
 	var id int
 	err := r.db.QueryRowContext(ctx, query, roomTitle).Scan(&id)
-	// result, err := r.db.ExecContext(ctx, query, roomTitle)
 	if err != nil {
 		return 0, fmt.Errorf("error create room: %w", err)
 	}
