@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"log"
 
 	"github.com/almat-kst10/message-service/internal/models"
 )
@@ -37,7 +38,6 @@ func (r *MessageClientRepo) SetMessage(ctx context.Context, message models.Messa
 	return nil
 }
 
-
 func (r *MessageClientRepo) GetMessage(ctx context.Context, message models.MessageClientRoom) ([]*models.MessageClientRoom, error) {
 	query := `
 		SELECT 
@@ -69,11 +69,9 @@ func (r *MessageClientRepo) GetMessage(ctx context.Context, message models.Messa
 		)
 
 		message.FullName = fmt.Sprintf("%s %s", name, surname)
-
 		if err != nil {
 			return nil, err
 		}
-
 		messages = append(messages, &message)
 	}
 

@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/almat-kst10/message-service/internal/models"
 	"github.com/almat-kst10/message-service/internal/service"
@@ -32,14 +33,14 @@ func (s *Server) RoomList(ctx context.Context, req *proto.RoomListRequest) (*pro
 	var protoRoomList []*proto.RoomGeneral
 	for _, room := range roomList {
 		protoRoom := &proto.RoomGeneral{
-			RoomId:         int32(room.RoomId),
-			RoomTile:       room.RoomTitle,
-			ClientId:       int32(room.ClientId),
-			ProfileId:      int32(room.ProfileId),
-			RoleId:         int32(room.RoleId),
-			RoleName:       room.RoleName,
-			IsMuted:        room.IsMuted,
-			IsTyping:       room.IsTyping,
+			RoomId:    int32(room.RoomId),
+			RoomTile:  room.RoomTitle,
+			ClientId:  int32(room.ClientId),
+			ProfileId: int32(room.ProfileId),
+			RoleId:    int32(room.RoleId),
+			RoleName:  room.RoleName,
+			IsMuted:   room.IsMuted,
+			IsTyping:  room.IsTyping,
 		}
 
 		protoRoomList = append(protoRoomList, protoRoom)
@@ -68,7 +69,7 @@ func (s *Server) RoomCreatePerson(ctx context.Context, req *proto.RoomCreatePers
 
 func (s *Server) ListMessageByRoom(ctx context.Context, req *proto.ListMessageByRoomRequest) (*proto.GetListMessageByRoomResponse, error) {
 	message := models.MessageClientRoom{
-		RoomId: int(req.RoomId),
+		RoomId:    int(req.RoomId),
 		ProfileId: int(req.ProfileId),
 	}
 	messageList, err := s.messageClient.GetMessage(ctx, message)
@@ -79,11 +80,11 @@ func (s *Server) ListMessageByRoom(ctx context.Context, req *proto.ListMessageBy
 	var resultList []*proto.Message
 	for _, message := range messageList {
 		protoMsg := &proto.Message{
-			Id: int32(message.Id),
-			RoomId: int32(message.RoomId),
+			Id:        int32(message.Id),
+			RoomId:    int32(message.RoomId),
 			ProfileId: int32(message.ProfileId),
-			FullName: message.FullName,
-			Text: message.Text,
+			FullName:  message.FullName,
+			Text:      message.Text,
 			CreatedAt: message.CreatedAt.GoString(),
 		}
 
@@ -95,13 +96,14 @@ func (s *Server) ListMessageByRoom(ctx context.Context, req *proto.ListMessageBy
 
 func (s *Server) SetMessage(ctx context.Context, req *proto.SetMessageRequest) (*proto.SetMessageResponse, error) {
 	msg := models.MessageClientRoom{
-		RoomId: int(req.RoomId),
+		RoomId:    int(req.RoomId),
 		ProfileId: int(req.ProfileId),
-		Text: req.Text,
+		Text:      req.Text,
 	}
+
 	err := s.messageClient.SetMessage(ctx, msg)
 	if err != nil {
-		return nil, err
+		return &proto.SetMessageResponse{Result: err.Error()}, err
 	}
 
 	return &proto.SetMessageResponse{Result: "Success"}, nil
