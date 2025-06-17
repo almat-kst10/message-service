@@ -737,6 +737,274 @@ func (x *SetMessageResponse) GetResult() string {
 	return ""
 }
 
+type SetMessageAiRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int32                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	ProfileId     int32                  `protobuf:"varint,2,opt,name=profile_id,json=profileId,proto3" json:"profile_id,omitempty"`
+	Text          string                 `protobuf:"bytes,3,opt,name=text,proto3" json:"text,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetMessageAiRequest) Reset() {
+	*x = SetMessageAiRequest{}
+	mi := &file_message_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetMessageAiRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetMessageAiRequest) ProtoMessage() {}
+
+func (x *SetMessageAiRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_message_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetMessageAiRequest.ProtoReflect.Descriptor instead.
+func (*SetMessageAiRequest) Descriptor() ([]byte, []int) {
+	return file_message_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *SetMessageAiRequest) GetRoomId() int32 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *SetMessageAiRequest) GetProfileId() int32 {
+	if x != nil {
+		return x.ProfileId
+	}
+	return 0
+}
+
+func (x *SetMessageAiRequest) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+type SetMessageAiResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        string                 `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetMessageAiResponse) Reset() {
+	*x = SetMessageAiResponse{}
+	mi := &file_message_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetMessageAiResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetMessageAiResponse) ProtoMessage() {}
+
+func (x *SetMessageAiResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_message_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetMessageAiResponse.ProtoReflect.Descriptor instead.
+func (*SetMessageAiResponse) Descriptor() ([]byte, []int) {
+	return file_message_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *SetMessageAiResponse) GetResult() string {
+	if x != nil {
+		return x.Result
+	}
+	return ""
+}
+
+type GetMessageAiRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RoomId        int32                  `protobuf:"varint,1,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	ProfileId     int32                  `protobuf:"varint,2,opt,name=profile_id,json=profileId,proto3" json:"profile_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMessageAiRequest) Reset() {
+	*x = GetMessageAiRequest{}
+	mi := &file_message_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMessageAiRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMessageAiRequest) ProtoMessage() {}
+
+func (x *GetMessageAiRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_message_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMessageAiRequest.ProtoReflect.Descriptor instead.
+func (*GetMessageAiRequest) Descriptor() ([]byte, []int) {
+	return file_message_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *GetMessageAiRequest) GetRoomId() int32 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *GetMessageAiRequest) GetProfileId() int32 {
+	if x != nil {
+		return x.ProfileId
+	}
+	return 0
+}
+
+type GetMessageAiResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Message       []*MessageAi           `protobuf:"bytes,1,rep,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMessageAiResponse) Reset() {
+	*x = GetMessageAiResponse{}
+	mi := &file_message_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMessageAiResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMessageAiResponse) ProtoMessage() {}
+
+func (x *GetMessageAiResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_message_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMessageAiResponse.ProtoReflect.Descriptor instead.
+func (*GetMessageAiResponse) Descriptor() ([]byte, []int) {
+	return file_message_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetMessageAiResponse) GetMessage() []*MessageAi {
+	if x != nil {
+		return x.Message
+	}
+	return nil
+}
+
+type MessageAi struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	RoomId        int32                  `protobuf:"varint,2,opt,name=room_id,json=roomId,proto3" json:"room_id,omitempty"`
+	Text          string                 `protobuf:"bytes,3,opt,name=text,proto3" json:"text,omitempty"`
+	CreatedAt     string                 `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MessageAi) Reset() {
+	*x = MessageAi{}
+	mi := &file_message_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MessageAi) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MessageAi) ProtoMessage() {}
+
+func (x *MessageAi) ProtoReflect() protoreflect.Message {
+	mi := &file_message_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MessageAi.ProtoReflect.Descriptor instead.
+func (*MessageAi) Descriptor() ([]byte, []int) {
+	return file_message_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *MessageAi) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *MessageAi) GetRoomId() int32 {
+	if x != nil {
+		return x.RoomId
+	}
+	return 0
+}
+
+func (x *MessageAi) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
+}
+
+func (x *MessageAi) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
 var File_message_proto protoreflect.FileDescriptor
 
 const file_message_proto_rawDesc = "" +
@@ -795,7 +1063,26 @@ const file_message_proto_rawDesc = "" +
 	"profile_id\x18\x02 \x01(\x05R\tprofileId\x12\x12\n" +
 	"\x04text\x18\x03 \x01(\tR\x04text\",\n" +
 	"\x12SetMessageResponse\x12\x16\n" +
-	"\x06result\x18\x01 \x01(\tR\x06result2\xca\x03\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"a\n" +
+	"\x13SetMessageAiRequest\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x05R\x06roomId\x12\x1d\n" +
+	"\n" +
+	"profile_id\x18\x02 \x01(\x05R\tprofileId\x12\x12\n" +
+	"\x04text\x18\x03 \x01(\tR\x04text\".\n" +
+	"\x14SetMessageAiResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\tR\x06result\"M\n" +
+	"\x13GetMessageAiRequest\x12\x17\n" +
+	"\aroom_id\x18\x01 \x01(\x05R\x06roomId\x12\x1d\n" +
+	"\n" +
+	"profile_id\x18\x02 \x01(\x05R\tprofileId\"B\n" +
+	"\x14GetMessageAiResponse\x12*\n" +
+	"\amessage\x18\x01 \x03(\v2\x10.proto.MessageAiR\amessage\"g\n" +
+	"\tMessageAi\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x17\n" +
+	"\aroom_id\x18\x02 \x01(\x05R\x06roomId\x12\x12\n" +
+	"\x04text\x18\x03 \x01(\tR\x04text\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x04 \x01(\tR\tcreatedAt2\xdc\x04\n" +
 	"\x0eMessageService\x12;\n" +
 	"\bRoomList\x12\x16.proto.RoomListRequest\x1a\x17.proto.RoomListResponse\x12M\n" +
 	"\x10RoomCreatePerson\x12\x1e.proto.RoomCreatePersonRequest\x1a\x19.proto.RoomCreateResponse\x12K\n" +
@@ -804,7 +1091,9 @@ const file_message_proto_rawDesc = "" +
 	"RoomDelete\x12\x18.proto.RoomDeleteRequest\x1a\x19.proto.RoomDeleteResponse\x12Y\n" +
 	"\x11ListMessageByRoom\x12\x1f.proto.ListMessageByRoomRequest\x1a#.proto.GetListMessageByRoomResponse\x12A\n" +
 	"\n" +
-	"SetMessage\x12\x18.proto.SetMessageRequest\x1a\x19.proto.SetMessageResponseB,Z*github.com/almat-kst10/message_micro/protob\x06proto3"
+	"SetMessage\x12\x18.proto.SetMessageRequest\x1a\x19.proto.SetMessageResponse\x12G\n" +
+	"\fSetMessageAi\x12\x1a.proto.SetMessageAiRequest\x1a\x1b.proto.SetMessageAiResponse\x12G\n" +
+	"\fGetMessageAi\x12\x1a.proto.GetMessageAiRequest\x1a\x1b.proto.GetMessageAiResponseB,Z*github.com/almat-kst10/message_micro/protob\x06proto3"
 
 var (
 	file_message_proto_rawDescOnce sync.Once
@@ -818,7 +1107,7 @@ func file_message_proto_rawDescGZIP() []byte {
 	return file_message_proto_rawDescData
 }
 
-var file_message_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_message_proto_msgTypes = make([]protoimpl.MessageInfo, 18)
 var file_message_proto_goTypes = []any{
 	(*RoomListRequest)(nil),              // 0: proto.RoomListRequest
 	(*RoomListResponse)(nil),             // 1: proto.RoomListResponse
@@ -833,27 +1122,37 @@ var file_message_proto_goTypes = []any{
 	(*Message)(nil),                      // 10: proto.Message
 	(*SetMessageRequest)(nil),            // 11: proto.SetMessageRequest
 	(*SetMessageResponse)(nil),           // 12: proto.SetMessageResponse
+	(*SetMessageAiRequest)(nil),          // 13: proto.SetMessageAiRequest
+	(*SetMessageAiResponse)(nil),         // 14: proto.SetMessageAiResponse
+	(*GetMessageAiRequest)(nil),          // 15: proto.GetMessageAiRequest
+	(*GetMessageAiResponse)(nil),         // 16: proto.GetMessageAiResponse
+	(*MessageAi)(nil),                    // 17: proto.MessageAi
 }
 var file_message_proto_depIdxs = []int32{
 	2,  // 0: proto.RoomListResponse.room_general:type_name -> proto.RoomGeneral
 	10, // 1: proto.GetListMessageByRoomResponse.message:type_name -> proto.Message
-	0,  // 2: proto.MessageService.RoomList:input_type -> proto.RoomListRequest
-	3,  // 3: proto.MessageService.RoomCreatePerson:input_type -> proto.RoomCreatePersonRequest
-	4,  // 4: proto.MessageService.RoomCreateGroup:input_type -> proto.RoomCreateGroupRequest
-	6,  // 5: proto.MessageService.RoomDelete:input_type -> proto.RoomDeleteRequest
-	8,  // 6: proto.MessageService.ListMessageByRoom:input_type -> proto.ListMessageByRoomRequest
-	11, // 7: proto.MessageService.SetMessage:input_type -> proto.SetMessageRequest
-	1,  // 8: proto.MessageService.RoomList:output_type -> proto.RoomListResponse
-	5,  // 9: proto.MessageService.RoomCreatePerson:output_type -> proto.RoomCreateResponse
-	5,  // 10: proto.MessageService.RoomCreateGroup:output_type -> proto.RoomCreateResponse
-	7,  // 11: proto.MessageService.RoomDelete:output_type -> proto.RoomDeleteResponse
-	9,  // 12: proto.MessageService.ListMessageByRoom:output_type -> proto.GetListMessageByRoomResponse
-	12, // 13: proto.MessageService.SetMessage:output_type -> proto.SetMessageResponse
-	8,  // [8:14] is the sub-list for method output_type
-	2,  // [2:8] is the sub-list for method input_type
-	2,  // [2:2] is the sub-list for extension type_name
-	2,  // [2:2] is the sub-list for extension extendee
-	0,  // [0:2] is the sub-list for field type_name
+	17, // 2: proto.GetMessageAiResponse.message:type_name -> proto.MessageAi
+	0,  // 3: proto.MessageService.RoomList:input_type -> proto.RoomListRequest
+	3,  // 4: proto.MessageService.RoomCreatePerson:input_type -> proto.RoomCreatePersonRequest
+	4,  // 5: proto.MessageService.RoomCreateGroup:input_type -> proto.RoomCreateGroupRequest
+	6,  // 6: proto.MessageService.RoomDelete:input_type -> proto.RoomDeleteRequest
+	8,  // 7: proto.MessageService.ListMessageByRoom:input_type -> proto.ListMessageByRoomRequest
+	11, // 8: proto.MessageService.SetMessage:input_type -> proto.SetMessageRequest
+	13, // 9: proto.MessageService.SetMessageAi:input_type -> proto.SetMessageAiRequest
+	15, // 10: proto.MessageService.GetMessageAi:input_type -> proto.GetMessageAiRequest
+	1,  // 11: proto.MessageService.RoomList:output_type -> proto.RoomListResponse
+	5,  // 12: proto.MessageService.RoomCreatePerson:output_type -> proto.RoomCreateResponse
+	5,  // 13: proto.MessageService.RoomCreateGroup:output_type -> proto.RoomCreateResponse
+	7,  // 14: proto.MessageService.RoomDelete:output_type -> proto.RoomDeleteResponse
+	9,  // 15: proto.MessageService.ListMessageByRoom:output_type -> proto.GetListMessageByRoomResponse
+	12, // 16: proto.MessageService.SetMessage:output_type -> proto.SetMessageResponse
+	14, // 17: proto.MessageService.SetMessageAi:output_type -> proto.SetMessageAiResponse
+	16, // 18: proto.MessageService.GetMessageAi:output_type -> proto.GetMessageAiResponse
+	11, // [11:19] is the sub-list for method output_type
+	3,  // [3:11] is the sub-list for method input_type
+	3,  // [3:3] is the sub-list for extension type_name
+	3,  // [3:3] is the sub-list for extension extendee
+	0,  // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_message_proto_init() }
@@ -867,7 +1166,7 @@ func file_message_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_message_proto_rawDesc), len(file_message_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   18,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

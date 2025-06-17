@@ -11,6 +11,9 @@ service MessageService {
     rpc RoomDelete (RoomDeleteRequest) returns (RoomDeleteResponse);
     rpc ListMessageByRoom (ListMessageByRoomRequest) returns (GetListMessageByRoomResponse);
     rpc SetMessage (SetMessageRequest) returns (SetMessageResponse);
+
+    rpc SetMessageAi (SetMessageAiRequest) returns (SetMessageAiResponse);
+    rpc GetMessageAi (GetMessageAiRequest) returns (GetMessageAiResponse);
 }
 
 message RoomListRequest {
@@ -83,3 +86,28 @@ message SetMessageResponse {
     string result = 1;
 }
 
+message SetMessageAiRequest {
+    int32 room_id = 1;
+    int32 profile_id = 2;
+    string text = 3;
+}
+
+message SetMessageAiResponse {
+    string result = 1;
+}
+
+message GetMessageAiRequest {
+    int32 room_id = 1;
+    int32 profile_id = 2;
+}
+
+message GetMessageAiResponse {
+    repeated MessageAi message = 1;
+}
+
+message MessageAi {
+    int32 id = 1;
+    int32 room_id = 2; 
+    string text = 3;
+    string created_at = 4;
+}

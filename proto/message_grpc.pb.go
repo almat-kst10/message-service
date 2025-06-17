@@ -25,6 +25,8 @@ const (
 	MessageService_RoomDelete_FullMethodName        = "/proto.MessageService/RoomDelete"
 	MessageService_ListMessageByRoom_FullMethodName = "/proto.MessageService/ListMessageByRoom"
 	MessageService_SetMessage_FullMethodName        = "/proto.MessageService/SetMessage"
+	MessageService_SetMessageAi_FullMethodName      = "/proto.MessageService/SetMessageAi"
+	MessageService_GetMessageAi_FullMethodName      = "/proto.MessageService/GetMessageAi"
 )
 
 // MessageServiceClient is the client API for MessageService service.
@@ -37,6 +39,8 @@ type MessageServiceClient interface {
 	RoomDelete(ctx context.Context, in *RoomDeleteRequest, opts ...grpc.CallOption) (*RoomDeleteResponse, error)
 	ListMessageByRoom(ctx context.Context, in *ListMessageByRoomRequest, opts ...grpc.CallOption) (*GetListMessageByRoomResponse, error)
 	SetMessage(ctx context.Context, in *SetMessageRequest, opts ...grpc.CallOption) (*SetMessageResponse, error)
+	SetMessageAi(ctx context.Context, in *SetMessageAiRequest, opts ...grpc.CallOption) (*SetMessageAiResponse, error)
+	GetMessageAi(ctx context.Context, in *GetMessageAiRequest, opts ...grpc.CallOption) (*GetMessageAiResponse, error)
 }
 
 type messageServiceClient struct {
@@ -107,6 +111,26 @@ func (c *messageServiceClient) SetMessage(ctx context.Context, in *SetMessageReq
 	return out, nil
 }
 
+func (c *messageServiceClient) SetMessageAi(ctx context.Context, in *SetMessageAiRequest, opts ...grpc.CallOption) (*SetMessageAiResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SetMessageAiResponse)
+	err := c.cc.Invoke(ctx, MessageService_SetMessageAi_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *messageServiceClient) GetMessageAi(ctx context.Context, in *GetMessageAiRequest, opts ...grpc.CallOption) (*GetMessageAiResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMessageAiResponse)
+	err := c.cc.Invoke(ctx, MessageService_GetMessageAi_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MessageServiceServer is the server API for MessageService service.
 // All implementations must embed UnimplementedMessageServiceServer
 // for forward compatibility.
@@ -117,6 +141,8 @@ type MessageServiceServer interface {
 	RoomDelete(context.Context, *RoomDeleteRequest) (*RoomDeleteResponse, error)
 	ListMessageByRoom(context.Context, *ListMessageByRoomRequest) (*GetListMessageByRoomResponse, error)
 	SetMessage(context.Context, *SetMessageRequest) (*SetMessageResponse, error)
+	SetMessageAi(context.Context, *SetMessageAiRequest) (*SetMessageAiResponse, error)
+	GetMessageAi(context.Context, *GetMessageAiRequest) (*GetMessageAiResponse, error)
 	mustEmbedUnimplementedMessageServiceServer()
 }
 
@@ -144,6 +170,12 @@ func (UnimplementedMessageServiceServer) ListMessageByRoom(context.Context, *Lis
 }
 func (UnimplementedMessageServiceServer) SetMessage(context.Context, *SetMessageRequest) (*SetMessageResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SetMessage not implemented")
+}
+func (UnimplementedMessageServiceServer) SetMessageAi(context.Context, *SetMessageAiRequest) (*SetMessageAiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetMessageAi not implemented")
+}
+func (UnimplementedMessageServiceServer) GetMessageAi(context.Context, *GetMessageAiRequest) (*GetMessageAiResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMessageAi not implemented")
 }
 func (UnimplementedMessageServiceServer) mustEmbedUnimplementedMessageServiceServer() {}
 func (UnimplementedMessageServiceServer) testEmbeddedByValue()                        {}
@@ -274,6 +306,42 @@ func _MessageService_SetMessage_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MessageService_SetMessageAi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetMessageAiRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).SetMessageAi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_SetMessageAi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).SetMessageAi(ctx, req.(*SetMessageAiRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MessageService_GetMessageAi_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMessageAiRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MessageServiceServer).GetMessageAi(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MessageService_GetMessageAi_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MessageServiceServer).GetMessageAi(ctx, req.(*GetMessageAiRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MessageService_ServiceDesc is the grpc.ServiceDesc for MessageService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -304,6 +372,14 @@ var MessageService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "SetMessage",
 			Handler:    _MessageService_SetMessage_Handler,
+		},
+		{
+			MethodName: "SetMessageAi",
+			Handler:    _MessageService_SetMessageAi_Handler,
+		},
+		{
+			MethodName: "GetMessageAi",
+			Handler:    _MessageService_GetMessageAi_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
